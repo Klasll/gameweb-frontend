@@ -2,50 +2,110 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Gameweb: Auto Battle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gameweb – Start</title>
   <style>
     body {
-      margin: 0;
-      background-color: #111;
-      color: #fff;
       font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #start-screen, #game-container {
+      margin-top: 40px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      border: none;
+      background-color: #4caf50;
+      color: white;
+      border-radius: 5px;
+    }
+
+    #board {
+      display: grid;
+      grid-template-columns: repeat(6, 80px);
+      grid-template-rows: repeat(3, 80px);
+      gap: 4px;
+      justify-content: center;
+      margin: 30px auto;
+    }
+
+    .cell {
+      width: 80px;
+      height: 80px;
+      background-color: #333;
+      border: 1px solid #555;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      flex-direction: column;
-    }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 2rem;
-    }
-    button {
       font-size: 1.5rem;
-      padding: 1rem 2rem;
-      background-color: #28a745;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      color: white;
     }
-    button:hover {
-      background-color: #218838;
+
+    #bench {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
     }
-    #game-container {
-      display: none;
+
+    .unit {
+      width: 60px;
+      height: 60px;
+      background-color: #666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      border-radius: 5px;
+      cursor: grab;
     }
   </style>
 </head>
 <body>
-
   <div id="start-screen">
-    <h1>Gameweb: Auto Battle</h1>
+    <h1>Willkommen bei Gameweb</h1>
     <button onclick="startGame()">Spiel starten</button>
   </div>
 
-  <div id="game-container">
-    <!-- Hier kommt später das Spielfeld hin -->
+  <div id="game-container" style="display: none;">
     <h2>Spiel läuft...</h2>
+
+    <div id="board">
+      <!-- 6 Spalten × 3 Reihen = 18 Zellen -->
+      <div class="cell" data-pos="0-0"></div>
+      <div class="cell" data-pos="1-0"></div>
+      <div class="cell" data-pos="2-0"></div>
+      <div class="cell" data-pos="3-0"></div>
+      <div class="cell" data-pos="4-0"></div>
+      <div class="cell" data-pos="5-0"></div>
+
+      <div class="cell" data-pos="0-1"></div>
+      <div class="cell" data-pos="1-1"></div>
+      <div class="cell" data-pos="2-1"></div>
+      <div class="cell" data-pos="3-1"></div>
+      <div class="cell" data-pos="4-1"></div>
+      <div class="cell" data-pos="5-1"></div>
+
+      <div class="cell" data-pos="0-2"></div>
+      <div class="cell" data-pos="1-2"></div>
+      <div class="cell" data-pos="2-2"></div>
+      <div class="cell" data-pos="3-2"></div>
+      <div class="cell" data-pos="4-2"></div>
+      <div class="cell" data-pos="5-2"></div>
+    </div>
+
+    <h3>Bank</h3>
+    <div id="bench">
+      <div class="unit">💂</div>
+      <div class="unit">🧙</div>
+      <div class="unit">🧟</div>
+    </div>
   </div>
 
   <script>
@@ -54,6 +114,5 @@
       document.getElementById("game-container").style.display = "block";
     }
   </script>
-  
 </body>
 </html>
