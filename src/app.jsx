@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import StartScreen from "./pages/StartScreen";
 import GameScreen from "./pages/GameScreen";
 
-export default function App() {
-  const [gameStarted, setGameStarted] = useState(false);
+function App() {
+  const [started, setStarted] = useState(false);
 
   return (
     <>
-      {!gameStarted && <StartScreen onStart={() => setGameStarted(true)} />}
-      {gameStarted && <GameScreen />}
+      {started ? (
+        <GameScreen />
+      ) : (
+        <StartScreen onStart={() => setStarted(true)} />
+      )}
     </>
   );
 }
+
+export default App;
