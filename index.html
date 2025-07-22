@@ -2,150 +2,132 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gameweb – Start</title>
+  <title>Gameweb Start - 3x6 Raster</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #1e1e1e;
-      color: white;
-      text-align: center;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      background: #f0f0f0;
       padding: 20px;
     }
 
-    #start-screen, #game-container {
-      margin-top: 40px;
+    h1 {
+      margin: 0;
     }
 
-    button {
-      padding: 10px 20px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      border: none;
-      background-color: #4caf50;
-      color: white;
-      border-radius: 5px;
-    }
-
-    #board {
+    .grid {
       display: grid;
-      grid-template-columns: repeat(6, 80px);
-      grid-template-rows: repeat(3, 80px);
-      gap: 4px;
-      justify-content: center;
-      margin: 30px auto;
+      grid-template-columns: repeat(6, 60px);
+      grid-template-rows: repeat(3, 60px);
+      gap: 5px;
+      background: white;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
     }
 
     .cell {
-      width: 80px;
-      height: 80px;
-      background-color: #333;
-      border: 1px solid #555;
+      background-color: #fff;
+      border: 1px solid #999;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 30px;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
     }
 
-    .cell.over {
-      background-color: #555;
-    }
-
-    #bench {
+    .unit-bank {
       display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 20px;
+      gap: 15px;
+      margin-top: 10px;
     }
 
     .unit {
-      width: 60px;
-      height: 60px;
-      background-color: #666;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      border-radius: 5px;
+      padding: 10px;
+      border: 1px solid #333;
+      background: #eee;
       cursor: grab;
+      font-size: 30px;
+      user-select: none;
+    }
+
+    .label {
+      font-weight: bold;
+      margin-bottom: 8px;
     }
   </style>
 </head>
 <body>
-  <div id="start-screen">
-    <h1>Willkommen bei Gameweb</h1>
-    <button onclick="startGame()">Spiel starten</button>
-  </div>
+  <h1>🧠 Gegnerfeld (KI)</h1>
+  <div class="grid" id="enemy-grid"></div>
 
-  <div id="game-container" style="display: none;">
-    <h2>Spiel läuft...</h2>
+  <h1>🧍 Spielerfeld</h1>
+  <div class="grid" id="player-grid"></div>
 
-    <div id="board">
-      <!-- 6 Spalten × 3 Reihen = 18 Zellen -->
-      <div class="cell" data-pos="0-0"></div>
-      <div class="cell" data-pos="1-0"></div>
-      <div class="cell" data-pos="2-0"></div>
-      <div class="cell" data-pos="3-0"></div>
-      <div class="cell" data-pos="4-0"></div>
-      <div class="cell" data-pos="5-0"></div>
-
-      <div class="cell" data-pos="0-1"></div>
-      <div class="cell" data-pos="1-1"></div>
-      <div class="cell" data-pos="2-1"></div>
-      <div class="cell" data-pos="3-1"></div>
-      <div class="cell" data-pos="4-1"></div>
-      <div class="cell" data-pos="5-1"></div>
-
-      <div class="cell" data-pos="0-2"></div>
-      <div class="cell" data-pos="1-2"></div>
-      <div class="cell" data-pos="2-2"></div>
-      <div class="cell" data-pos="3-2"></div>
-      <div class="cell" data-pos="4-2"></div>
-      <div class="cell" data-pos="5-2"></div>
-    </div>
-
-    <h3>Bank</h3>
-    <div id="bench">
-      <div class="unit" draggable="true">💂</div>
-      <div class="unit" draggable="true">🧙</div>
-      <div class="unit" draggable="true">🧟</div>
-    </div>
+  <div class="label">Einheitenbank:</div>
+  <div class="unit-bank" id="unit-bank">
+    <div class="unit" draggable="true">💂</div>
+    <div class="unit" draggable="true">🧙</div>
+    <div class="unit" draggable="true">🏹</div>
   </div>
 
   <script>
-    function startGame() {
-      document.getElementById("start-screen").style.display = "none";
-      document.getElementById("game-container").style.display = "block";
+    const enemyGrid = document.getElementById("enemy-grid");
+    const playerGrid = document.getElementById("player-grid");
+
+    // Raster mit 3 Zeilen und 6 Spalten
+    function createGrid(container, prefix) {
+      for (let i = 0; i < 18; i++) {
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+        cell.dataset.pos = `${prefix}-${i}`;
+        container.appendChild(cell);
+
+        if (prefix === "player") {
+          // Drag & Drop für Spielerzellen
+          cell.addEventListener("dragover", (e) => e.preventDefault());
+          cell.addEventListener("drop", (e) => {
+            e.preventDefault();
+            const emoji = e.dataTransfer.getData("text/plain");
+            if (cell.children.length === 0) {
+              const unit = document.createElement("div");
+              unit.className = "unit";
+              unit.textContent = emoji;
+              cell.appendChild(unit);
+            }
+          });
+        }
+      }
     }
 
-    let draggedUnit = null;
+    createGrid(enemyGrid, "enemy");
+    createGrid(playerGrid, "player");
 
-    document.querySelectorAll('.unit').forEach(unit => {
-      unit.addEventListener('dragstart', (e) => {
-        draggedUnit = unit.cloneNode(true); // Kopie
+    // Drag & Drop aus der Einheitenbank
+    document.querySelectorAll(".unit-bank .unit").forEach(unit => {
+      unit.addEventListener("dragstart", (e) => {
+        e.dataTransfer.setData("text/plain", unit.textContent);
       });
     });
 
-    document.querySelectorAll('.cell').forEach(cell => {
-      cell.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        cell.classList.add('over');
-      });
+    // Gegner-Einheiten automatisch setzen (erste 6 Zellen)
+    const enemyEmojis = ['👾', '🤖', '👹', '👺', '🦹‍♂️', '👻'];
+    function placeEnemies() {
+      const cells = enemyGrid.querySelectorAll(".cell");
+      for (let i = 0; i < enemyEmojis.length; i++) {
+        const unit = document.createElement("div");
+        unit.className = "unit";
+        unit.textContent = enemyEmojis[i];
+        cells[i].appendChild(unit);
+      }
+    }
 
-      cell.addEventListener('dragleave', () => {
-        cell.classList.remove('over');
-      });
-
-      cell.addEventListener('drop', (e) => {
-        e.preventDefault();
-        cell.classList.remove('over');
-        if (draggedUnit) {
-          cell.innerHTML = '';
-          cell.appendChild(draggedUnit);
-          draggedUnit = null;
-        }
-      });
-    });
+    placeEnemies();
   </script>
 </body>
 </html>
