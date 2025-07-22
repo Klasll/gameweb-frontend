@@ -2,18 +2,58 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gameweb Frontend</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Gameweb: Auto Battle</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+    }
+    button {
+      font-size: 1.5rem;
+      padding: 1rem 2rem;
+      background-color: #28a745;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    #game-container {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <h1>Gameweb Client</h1>
 
-  <div id="log"></div>
+  <div id="start-screen">
+    <h1>Gameweb: Auto Battle</h1>
+    <button onclick="startGame()">Spiel starten</button>
+  </div>
 
-  <input id="input" type="text" placeholder="Nachricht eingeben..." />
-  <button onclick="sendMessage()">Senden</button>
+  <div id="game-container">
+    <!-- Hier kommt später das Spielfeld hin -->
+    <h2>Spiel läuft...</h2>
+  </div>
 
-  <script src="script.js"></script>
+  <script>
+    function startGame() {
+      document.getElementById("start-screen").style.display = "none";
+      document.getElementById("game-container").style.display = "block";
+    }
+  </script>
+  
 </body>
 </html>
