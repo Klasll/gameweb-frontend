@@ -47,6 +47,10 @@
       font-size: 1.5rem;
     }
 
+    .cell.over {
+      background-color: #555;
+    }
+
     #bench {
       display: flex;
       gap: 10px;
@@ -102,9 +106,9 @@
 
     <h3>Bank</h3>
     <div id="bench">
-      <div class="unit">💂</div>
-      <div class="unit">🧙</div>
-      <div class="unit">🧟</div>
+      <div class="unit" draggable="true">💂</div>
+      <div class="unit" draggable="true">🧙</div>
+      <div class="unit" draggable="true">🧟</div>
     </div>
   </div>
 
@@ -113,6 +117,35 @@
       document.getElementById("start-screen").style.display = "none";
       document.getElementById("game-container").style.display = "block";
     }
+
+    let draggedUnit = null;
+
+    document.querySelectorAll('.unit').forEach(unit => {
+      unit.addEventListener('dragstart', (e) => {
+        draggedUnit = unit.cloneNode(true); // Kopie
+      });
+    });
+
+    document.querySelectorAll('.cell').forEach(cell => {
+      cell.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        cell.classList.add('over');
+      });
+
+      cell.addEventListener('dragleave', () => {
+        cell.classList.remove('over');
+      });
+
+      cell.addEventListener('drop', (e) => {
+        e.preventDefault();
+        cell.classList.remove('over');
+        if (draggedUnit) {
+          cell.innerHTML = '';
+          cell.appendChild(draggedUnit);
+          draggedUnit = null;
+        }
+      });
+    });
   </script>
 </body>
 </html>
