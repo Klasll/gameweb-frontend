@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+
+console.log("AppTemp Komponente geladen");
+
 import StartScreen from "./pages/StartScreen";
 import GameScreen from "./pages/GameScreen";
 
-export default function AppTemp() {
+export default function App() {
   const [started, setStarted] = useState(false);
-
-  console.log("started:", started); // Debug-Ausgabe
+  console.log("AppTemp render");
 
   return (
     <>
